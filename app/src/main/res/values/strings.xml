@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="e_mail_text">E-mail</string>
+    <string name="password_text">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="nama">Nama</string>
+    <string name="daftar">DAFTAR</string>
+    <string name="error_password_minimal">Password harus terdiri dari minimal 8 karakter</string>
+</resources>
