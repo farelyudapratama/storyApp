@@ -81,6 +81,10 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.loginButton.setOnClickListener {
+            startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

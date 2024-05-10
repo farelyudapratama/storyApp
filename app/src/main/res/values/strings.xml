@@ -6,4 +6,5 @@
     <string name="nama">Nama</string>
     <string name="daftar">DAFTAR</string>
     <string name="error_password_minimal">Password harus terdiri dari minimal 8 karakter</string>
+    <string name="error_email_invalid">Format email salah\nContoh: tes@gmail.com</string>
 </resources>

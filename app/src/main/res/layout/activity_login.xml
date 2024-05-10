@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titleLogin"
         app:startIconDrawable="@drawable/baseline_email_24">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.yuch.storyapp.view.EditTextEmail
             android:id="@+id/ed_login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
