@@ -51,6 +51,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")

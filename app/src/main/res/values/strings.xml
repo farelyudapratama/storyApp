@@ -7,4 +7,6 @@
     <string name="daftar">DAFTAR</string>
     <string name="error_password_minimal">Password harus terdiri dari minimal 8 karakter</string>
     <string name="error_email_invalid">Format email salah\nContoh: tes@gmail.com</string>
+    <string name="name">Nama</string>
+    <string name="desc">Deskripsi</string>
 </resources>

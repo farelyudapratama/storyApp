@@ -1,5 +1,6 @@
 package com.yuch.storyapp.data
 
+import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.yuch.storyapp.data.api.ApiConfig
 import com.yuch.storyapp.data.api.ApiService
@@ -56,7 +57,8 @@ class UserRepository private constructor(
                         isLogin = true
                     )
                     saveSession(sesi)
-                    ApiConfig.token = loginResult.token ?: ""
+//                    ApiConfig.token = loginResult.token ?: ""
+                    ApiConfig.getApiService(sesi.token)
                     return ResultState.Success(response)
                 } else {
                     return ResultState.Error("Login is nulll")
@@ -70,6 +72,18 @@ class UserRepository private constructor(
         }
     }
 
+    fun getStories() = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getStories()
+            emit(ResultState.Success(response))
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            ResultState.Error(errorMessage.toString())
+        }
+    }
 
     companion object{
         @Volatile

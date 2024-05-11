@@ -2,8 +2,10 @@ package com.yuch.storyapp.data.api
 
 import com.yuch.storyapp.data.response.LoginResponse
 import com.yuch.storyapp.data.response.RegisterResponse
+import com.yuch.storyapp.data.response.StoryResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -21,4 +23,7 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): LoginResponse
+
+    @GET("stories")
+    suspend fun getStories(): StoryResponse
 }
