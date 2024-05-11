@@ -88,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.pbLogin.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+        binding.pbRegister.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }
 
 }

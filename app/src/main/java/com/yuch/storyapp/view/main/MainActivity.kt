@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -88,6 +89,10 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setupAction() {
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -100,6 +105,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.pbLogin.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+        binding.pbMain.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }
 }
