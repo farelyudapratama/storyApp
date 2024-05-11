@@ -1,5 +1,6 @@
 package com.yuch.storyapp.data.api
 
+import com.yuch.storyapp.data.response.DetailStoryResponse
 import com.yuch.storyapp.data.response.LoginResponse
 import com.yuch.storyapp.data.response.RegisterResponse
 import com.yuch.storyapp.data.response.StoryResponse
@@ -7,6 +8,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @FormUrlEncoded
@@ -26,4 +28,10 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(): StoryResponse
+
+    @GET("stories/{id}")
+    suspend fun getDetailStory(
+        @Path("id") id: String
+    ): DetailStoryResponse
+
 }

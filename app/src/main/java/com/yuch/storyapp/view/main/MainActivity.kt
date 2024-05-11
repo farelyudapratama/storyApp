@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
                 if (story != null) {
                     when (story) {
                         is ResultState.Loading -> {
-                            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                             showLoading(true)
                         }
 
@@ -61,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
                         is ResultState.Error -> {
                             showLoading(false)
+                            Toast.makeText(this, "Error: ${story.error}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

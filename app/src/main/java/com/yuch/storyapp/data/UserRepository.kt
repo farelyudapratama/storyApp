@@ -85,6 +85,19 @@ class UserRepository private constructor(
         }
     }
 
+    fun getDetailStories(id: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getDetailStory(id)
+            emit(ResultState.Success(response))
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            emit(ResultState.Error(errorMessage.toString()))
+        }
+    }
+
     companion object{
         @Volatile
         private var instance: UserRepository? = null

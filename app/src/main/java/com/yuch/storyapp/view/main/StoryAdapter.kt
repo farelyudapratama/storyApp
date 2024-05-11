@@ -104,9 +104,6 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.MyViewHolder>() {
             binding.root.setOnClickListener {
                 val intentDetail = Intent(binding.root.context, DetailActivity::class.java)
                 intentDetail.putExtra(DetailActivity.ID, itemName.id)
-                intentDetail.putExtra(DetailActivity.NAME, itemName.name)
-                intentDetail.putExtra(DetailActivity.DESCRIPTION, itemName.description)
-                intentDetail.putExtra(DetailActivity.PICTURE, itemName.photoUrl)
                 binding.root.context.startActivity(intentDetail)
             }
         }
