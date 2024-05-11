@@ -9,4 +9,5 @@
     <string name="error_email_invalid">Format email salah\nContoh: tes@gmail.com</string>
     <string name="name">Nama</string>
     <string name="desc">Deskripsi</string>
+    <string name="menu_logout">Keluar</string>
 </resources>

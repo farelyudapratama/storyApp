@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yuch.storyapp.R
 import com.yuch.storyapp.data.ResultState
 import com.yuch.storyapp.databinding.ActivityMainBinding
 import com.yuch.storyapp.view.ViewModelFactory
@@ -85,6 +87,16 @@ class MainActivity : AppCompatActivity() {
         binding.rvStoryItem.addItemDecoration(itemDecoration)
     }
     private fun setupAction() {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu1 -> {
+                viewModel.logout()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showLoading(isLoading: Boolean) {
