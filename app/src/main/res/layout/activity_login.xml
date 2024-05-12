@@ -15,9 +15,11 @@
         android:fontFamily="sans-serif-black"
         android:text="Silahkan Login Untuk Masuk Aplikasi"
         android:textSize="20sp"
+        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:alpha="100"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailEditTextLayout"
@@ -27,10 +29,12 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="32dp"
+        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleLogin"
-        app:startIconDrawable="@drawable/baseline_email_24">
+        app:startIconDrawable="@drawable/baseline_email_24"
+        tools:alpha="100">
 
         <com.yuch.storyapp.view.EditTextEmail
             android:id="@+id/ed_login_email"
@@ -51,11 +55,13 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:alpha="0"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
-        app:startIconDrawable="@drawable/baseline_lock_24">
+        app:startIconDrawable="@drawable/baseline_lock_24"
+        tools:alpha="100">
 
         <com.yuch.storyapp.view.EditTextPassword
             android:id="@+id/ed_login_password"
@@ -78,9 +84,11 @@
         android:backgroundTint="@color/navy"
         android:textColor="@color/white"
         android:text="@string/login"
+        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
+        tools:alpha="100"/>
 
     <TextView
         android:id="@+id/signupButton"
@@ -92,9 +100,11 @@
         android:textColor="@color/navy"
         android:text="Daftar?"
         android:gravity="end"
+        android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        tools:alpha="100"/>
 
     <ProgressBar
         android:id="@+id/pb_login"

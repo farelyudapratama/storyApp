@@ -1,8 +1,11 @@
 package com.yuch.storyapp.view.register
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -25,7 +28,9 @@ class RegisterActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
     }
+
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -86,7 +91,19 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
         }
     }
+    private fun playAnimation() {
+        val title = ObjectAnimator.ofFloat(binding.titleRegister, View.ALPHA, 1f).setDuration(100)
+        val name = ObjectAnimator.ofFloat(binding.edRegisterName, View.ALPHA, 1f).setDuration(100)
+        val email = ObjectAnimator.ofFloat(binding.edRegisterEmail, View.ALPHA, 1f).setDuration(100)
+        val password = ObjectAnimator.ofFloat(binding.edRegisterPassword, View.ALPHA, 1f).setDuration(100)
+        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
 
+        AnimatorSet().apply {
+            playSequentially(title, name, email, password, login, signup)
+            start()
+        }
+    }
     private fun showLoading(isLoading: Boolean) {
         binding.pbRegister.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }

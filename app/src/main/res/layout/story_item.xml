@@ -24,7 +24,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/avatars"
+            android:transitionName="avatar"/>
 
         <TextView
             android:id="@+id/tv_item_name"
@@ -39,7 +40,8 @@
             app:layout_constraintStart_toStartOf="@id/iv_item_story"
             app:layout_constraintEnd_toEndOf="@id/iv_item_story"
             tools:text="@string/name"
-            tools:ignore="ContentDescription,MissingConstraints" />
+            tools:ignore="ContentDescription,MissingConstraints"
+            android:transitionName="name"/>
 
         <TextView
             android:id="@+id/tv_item_desc"
@@ -53,7 +55,8 @@
             app:layout_constraintStart_toStartOf="@id/iv_item_story"
             app:layout_constraintEnd_toEndOf="@id/iv_item_story"
             tools:text="@string/desc"
-            tools:ignore="ContentDescription,MissingConstraints" />
+            tools:ignore="ContentDescription,MissingConstraints"
+            android:transitionName="desc"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

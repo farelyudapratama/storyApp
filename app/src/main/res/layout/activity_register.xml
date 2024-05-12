@@ -8,13 +8,15 @@
     tools:context=".view.register.RegisterActivity">
 
     <TextView
-        android:id="@+id/titleLogin"
+        android:id="@+id/titleRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:fontFamily="sans-serif-black"
         android:text="Silahkan Daftar Untuk Masuk Aplikasi"
         android:textSize="20sp"
+        android:alpha="0"
+        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,9 +29,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="32dp"
+        android:alpha="0"
+        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLogin"
+        app:layout_constraintTop_toBottomOf="@+id/titleRegister"
         app:startIconDrawable="@drawable/baseline_person_24">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -52,6 +56,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:alpha="0"
+        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout"
@@ -76,6 +82,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:alpha="0"
+        tools:alpha="100"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +111,8 @@
         android:backgroundTint="@color/navy"
         android:textColor="@color/white"
         android:text="@string/daftar"
+        android:alpha="0"
+        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout" />
@@ -116,6 +126,8 @@
         android:layout_marginEnd="32dp"
         android:textColor="@color/navy"
         android:text="Login?"
+        android:alpha="0"
+        tools:alpha="100"
         android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

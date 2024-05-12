@@ -1,8 +1,11 @@
 package com.yuch.storyapp.view.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -30,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
     }
 
     private fun setupView(){
@@ -88,6 +92,19 @@ class LoginActivity : AppCompatActivity() {
         binding.signupButton.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+    }
+    private fun playAnimation() {
+        val title = ObjectAnimator.ofFloat(binding.titleLogin, View.ALPHA, 1f).setDuration(100)
+        val email = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
+        val password = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
+        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
+
+
+        AnimatorSet().apply {
+            playSequentially(title, email, password, login, signup)
+            start()
         }
     }
     private fun showLoading(isLoading: Boolean) {

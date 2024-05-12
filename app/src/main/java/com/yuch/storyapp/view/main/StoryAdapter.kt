@@ -1,9 +1,12 @@
 package com.yuch.storyapp.view.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.yuch.storyapp.data.response.ListStoryItem
@@ -104,7 +107,14 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.MyViewHolder>() {
             binding.root.setOnClickListener {
                 val intentDetail = Intent(binding.root.context, DetailActivity::class.java)
                 intentDetail.putExtra(DetailActivity.ID, itemName.id)
-                binding.root.context.startActivity(intentDetail)
+
+                val optionCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    binding.root.context as Activity,
+                    Pair(binding.ivItemStory, "photo"),
+                    Pair(binding.tvItemName, "name"),
+                    Pair(binding.tvItemDesc, "description")
+                )
+                binding.root.context.startActivity(intentDetail, optionCompat.toBundle())
             }
         }
     }
