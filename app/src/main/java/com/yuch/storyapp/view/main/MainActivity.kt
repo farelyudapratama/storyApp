@@ -17,6 +17,7 @@ import com.yuch.storyapp.R
 import com.yuch.storyapp.data.ResultState
 import com.yuch.storyapp.databinding.ActivityMainBinding
 import com.yuch.storyapp.view.ViewModelFactory
+import com.yuch.storyapp.view.addStory.AddStoryActivity
 import com.yuch.storyapp.view.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
-        itemDecoration()
+        recycleViewSetup()
         adapter = StoryAdapter()
         binding.rvStoryItem.adapter = adapter
         viewModel.getSession().observe(this) { user ->
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-    private fun itemDecoration() {
+    private fun recycleViewSetup() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvStoryItem.layoutManager = layoutManager
 
@@ -88,6 +89,9 @@ class MainActivity : AppCompatActivity() {
         binding.rvStoryItem.addItemDecoration(itemDecoration)
     }
     private fun setupAction() {
+        binding.fabAddStory.setOnClickListener {
+            startActivity(Intent(this, AddStoryActivity::class.java))
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
