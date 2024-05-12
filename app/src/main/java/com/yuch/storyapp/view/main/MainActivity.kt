@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         setupView()
         setupAction()
         recycleViewSetup()
-        playAnimation()
         adapter = StoryAdapter()
         binding.rvStoryItem.adapter = adapter
         viewModel.getSession().observe(this) { user ->
@@ -68,11 +67,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.storyItem
     }
 
     private fun setupView(){
@@ -111,10 +105,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun playAnimation() {
-
     }
 
     private fun showLoading(isLoading: Boolean) {

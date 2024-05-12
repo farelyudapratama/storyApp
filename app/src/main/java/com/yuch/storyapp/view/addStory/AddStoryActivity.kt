@@ -20,6 +20,7 @@ import com.yuch.storyapp.databinding.ActivityAddStoryBinding
 import com.yuch.storyapp.view.ViewModelFactory
 import com.yuch.storyapp.view.cameraX.CameraXActivity
 import com.yuch.storyapp.view.cameraX.CameraXActivity.Companion.CAMERAX_RESULT
+import com.yuch.storyapp.view.main.MainActivity
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
@@ -95,7 +96,7 @@ class AddStoryActivity : AppCompatActivity() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = "Ini adalah deksripsi gambar"
+            val description = binding.descEditText.text.toString()
 
             viewModel.uploadImage(imageFile, description).observe(this) {result ->
                 if (result != null) {
@@ -106,7 +107,9 @@ class AddStoryActivity : AppCompatActivity() {
                         is ResultState.Success -> {
                             showToast(result.data.message.toString())
                             showLoading(false)
-                            finish()
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
                         }
                         is ResultState.Error -> {
                             showLoading(false)
