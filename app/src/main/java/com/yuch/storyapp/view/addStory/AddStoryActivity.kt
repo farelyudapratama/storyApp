@@ -5,19 +5,27 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import com.yuch.storyapp.R
+import com.yuch.storyapp.data.ResultState
 import com.yuch.storyapp.databinding.ActivityAddStoryBinding
+import com.yuch.storyapp.view.ViewModelFactory
 import com.yuch.storyapp.view.cameraX.CameraXActivity
 import com.yuch.storyapp.view.cameraX.CameraXActivity.Companion.CAMERAX_RESULT
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
-
+    private val viewModel by viewModels<AddStoryViewModel>{
+        ViewModelFactory.getInstance(this)
+    }
     private var currentImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +41,7 @@ class AddStoryActivity : AppCompatActivity() {
         binding.apply {
             cameraXButton.setOnClickListener { startCameraX()  }
             galleryButton.setOnClickListener { startGallery() }
-            uploadButton.setOnClickListener {  }
+            uploadButton.setOnClickListener { uploadImage() }
         }
     }
 
@@ -81,5 +89,39 @@ class AddStoryActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+    }
+
+    private fun uploadImage() {
+        currentImageUri?.let { uri ->
+            val imageFile = uriToFile(uri, this).reduceFileImage()
+            Log.d("Image File", "showImage: ${imageFile.path}")
+            val description = "Ini adalah deksripsi gambar"
+
+            viewModel.uploadImage(imageFile, description).observe(this) {result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultState.Loading -> {
+                            showLoading(true)
+                        }
+                        is ResultState.Success -> {
+                            showToast(result.data.message.toString())
+                            showLoading(false)
+                            finish()
+                        }
+                        is ResultState.Error -> {
+                            showLoading(false)
+                            showToast(result.error)
+                        }
+                    }
+                }
+            }
+        } ?: showToast(getString(R.string.empty_image_warning))
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

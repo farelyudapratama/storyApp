@@ -67,7 +67,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.storyItem
     }
 
     private fun setupView(){

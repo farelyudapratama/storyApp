@@ -18,6 +18,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.yuch.storyapp.databinding.ActivityCameraXactivityBinding
+import com.yuch.storyapp.view.addStory.createCustomTempFile
 
 class CameraXActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraXactivityBinding

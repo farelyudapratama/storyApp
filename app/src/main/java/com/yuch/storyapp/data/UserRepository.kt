@@ -9,8 +9,14 @@ import com.yuch.storyapp.data.pref.UserPreference
 import com.yuch.storyapp.data.response.ErrorResponse
 import com.yuch.storyapp.data.response.LoginResponse
 import com.yuch.storyapp.data.response.RegisterResponse
+import com.yuch.storyapp.data.response.UploadStoryResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
+import java.io.File
 
 class UserRepository private constructor(
     private val apiService: ApiService,
@@ -95,6 +101,25 @@ class UserRepository private constructor(
             val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
             val errorMessage = errorBody.message
             emit(ResultState.Error(errorMessage.toString()))
+        }
+    }
+
+    fun addStories(imageFile: File, description: String) = liveData {
+        emit(ResultState.Loading)
+        val requestBody = description.toRequestBody("text/plain".toMediaType())
+        val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+        val multipartBody = MultipartBody.Part.createFormData(
+            "photo",
+            imageFile.name,
+            requestImageFile
+        )
+        try {
+            val successResponse = apiService.addStory(multipartBody, requestBody)
+            emit(ResultState.Success(successResponse))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, UploadStoryResponse::class.java)
+            emit(ResultState.Error("Error: $errorResponse"))
         }
     }
 
