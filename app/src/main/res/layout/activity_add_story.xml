@@ -33,7 +33,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_place_holder" />
+            app:srcCompat="@drawable/ic_place_holder"
+            android:contentDescription="Tampilan preview gambar" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/descTextLayout"

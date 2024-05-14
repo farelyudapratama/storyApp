@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                         is ResultState.Success -> {
                             val storyData = story.data.listStory
                             val storyAdapter = StoryAdapter()
-                            storyAdapter.setList(storyData)
+                            storyAdapter.submitList(storyData)
                             binding.rvStoryItem.adapter = storyAdapter
                             showLoading(false)
                         }

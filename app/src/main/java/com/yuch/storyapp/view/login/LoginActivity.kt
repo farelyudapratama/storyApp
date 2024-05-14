@@ -20,7 +20,7 @@ import com.yuch.storyapp.view.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<LoginViewModel>(){
+    private val viewModel by viewModels<LoginViewModel>{
         ViewModelFactory.getInstance(this)
     }
 
@@ -37,10 +37,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupView(){
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
+            @Suppress("DEPRECATION")
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -95,12 +95,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     private fun playAnimation() {
-        val title = ObjectAnimator.ofFloat(binding.titleLogin, View.ALPHA, 1f).setDuration(100)
-        val email = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
-        val password = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
-        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
-        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
-
+        val title = ObjectAnimator.ofFloat(binding.titleLogin, View.ALPHA, 1f).setDuration(1000)
+        val email = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(1000)
+        val password = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(1000)
+        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(1000)
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(1000)
 
         AnimatorSet().apply {
             playSequentially(title, email, password, login, signup)
@@ -108,6 +107,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     private fun showLoading(isLoading: Boolean) {
-        binding.pbLogin.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+        binding.pbLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
