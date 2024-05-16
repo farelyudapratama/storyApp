@@ -1,5 +1,6 @@
 package com.yuch.storyapp.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.yuch.storyapp.data.api.ApiConfig
@@ -7,6 +8,7 @@ import com.yuch.storyapp.data.api.ApiService
 import com.yuch.storyapp.data.pref.UserModel
 import com.yuch.storyapp.data.pref.UserPreference
 import com.yuch.storyapp.data.response.ErrorResponse
+import com.yuch.storyapp.data.response.ListStoryItem
 import com.yuch.storyapp.data.response.LoginResponse
 import com.yuch.storyapp.data.response.RegisterResponse
 import com.yuch.storyapp.data.response.UploadStoryResponse
@@ -120,6 +122,19 @@ class UserRepository private constructor(
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, UploadStoryResponse::class.java)
             emit(ResultState.Error("Error: $errorResponse"))
+        }
+    }
+
+    fun getStoriesWithLocation(): LiveData<ResultState<List<ListStoryItem>>> = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getStoriesWithLocation()
+            emit(ResultState.Success(response.listStory))
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            ResultState.Error(errorMessage.toString())
         }
     }
 

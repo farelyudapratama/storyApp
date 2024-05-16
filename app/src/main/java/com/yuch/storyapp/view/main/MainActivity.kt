@@ -19,6 +19,7 @@ import com.yuch.storyapp.databinding.ActivityMainBinding
 import com.yuch.storyapp.view.ViewModelFactory
 import com.yuch.storyapp.view.addStory.AddStoryActivity
 import com.yuch.storyapp.view.login.LoginActivity
+import com.yuch.storyapp.view.maps.MapsActivity
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>{
@@ -100,6 +101,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu1 -> {
+                startActivity(Intent(this, MapsActivity::class.java))
+            }
+            R.id.menu2 -> {
                 viewModel.logout()
                 return true
             }
