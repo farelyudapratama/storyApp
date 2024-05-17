@@ -1,5 +1,6 @@
 package com.yuch.storyapp.data.response
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 data class StoryResponse(

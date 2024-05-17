@@ -8,13 +8,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yuch.storyapp.R
-import com.yuch.storyapp.data.ResultState
+import com.yuch.storyapp.data.adapter.LoadingStateAdapter
+import com.yuch.storyapp.data.adapter.StoryAdapter
 import com.yuch.storyapp.databinding.ActivityMainBinding
 import com.yuch.storyapp.view.ViewModelFactory
 import com.yuch.storyapp.view.addStory.AddStoryActivity
@@ -45,28 +45,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
-            viewModel.storyItem.observe(this) { story ->
-                if (story != null) {
-                    when (story) {
-                        is ResultState.Loading -> {
-                            showLoading(true)
-                        }
-
-                        is ResultState.Success -> {
-                            val storyData = story.data.listStory
-                            val storyAdapter = StoryAdapter()
-                            storyAdapter.submitList(storyData)
-                            binding.rvStoryItem.adapter = storyAdapter
-                            showLoading(false)
-                        }
-
-                        is ResultState.Error -> {
-                            showLoading(false)
-                            Toast.makeText(this, "Error: ${story.error}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+            viewModel.getStoryPagingData().observe(this) { story ->
+                adapter.submitData(lifecycle, story)
             }
+            binding.rvStoryItem.adapter = adapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
         }
     }
 
@@ -109,9 +95,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.pbMain.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }
 }

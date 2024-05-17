@@ -2,9 +2,14 @@ package com.yuch.storyapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.google.gson.Gson
 import com.yuch.storyapp.data.api.ApiConfig
 import com.yuch.storyapp.data.api.ApiService
+import com.yuch.storyapp.data.pagging.StoryPagingSource
 import com.yuch.storyapp.data.pref.UserModel
 import com.yuch.storyapp.data.pref.UserPreference
 import com.yuch.storyapp.data.response.ErrorResponse
@@ -80,17 +85,15 @@ class UserRepository private constructor(
         }
     }
 
-    fun getStories() = liveData {
-        emit(ResultState.Loading)
-        try {
-            val response = apiService.getStories()
-            emit(ResultState.Success(response))
-        } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            ResultState.Error(errorMessage.toString())
-        }
+    fun getStories(): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService)
+            }
+        ).liveData
     }
 
     fun getDetailStories(id: String) = liveData {
