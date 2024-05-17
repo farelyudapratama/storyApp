@@ -14,7 +14,7 @@ import com.yuch.storyapp.data.response.ListStoryItem
 import com.yuch.storyapp.databinding.StoryItemBinding
 import com.yuch.storyapp.view.detail.DetailActivity
 
-class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(StoryDiffCallback()) {
+class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(StoryDiffCallback) {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val storyItem = getItem(position)
         if (storyItem != null) {
@@ -52,14 +52,16 @@ class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>
             }
         }
     }
-    private class StoryDiffCallback : DiffUtil.ItemCallback<ListStoryItem>() {
-        override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-            return oldItem.id == newItem.id
-        }
+    companion object {
+        val StoryDiffCallback = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-            return oldItem == newItem
-        }
+            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
 
+        }
     }
 }
