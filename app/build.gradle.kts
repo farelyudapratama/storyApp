@@ -36,6 +36,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
     }
     buildFeatures {
         viewBinding = true
@@ -74,7 +75,9 @@ dependencies {
     implementation("androidx.exifinterface:exifinterface:1.3.6")
 
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+    implementation("androidx.room:room-paging:2.4.0-rc01")
 
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 }
