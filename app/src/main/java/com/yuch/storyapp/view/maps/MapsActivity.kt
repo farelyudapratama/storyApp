@@ -58,7 +58,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                         .title(data.name)
                                         .snippet(data.description)
                                 )
-//                                Log.d("MapsActivity", "Adding marker at: $lat, $lon, $data.name $data.description")
                             }
                         }
                     }

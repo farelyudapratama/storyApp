@@ -113,7 +113,7 @@ class UserRepository private constructor(
         }
     }
 
-    fun addStories(imageFile: File, description: String) = liveData {
+    fun addStories(imageFile: File, description: String, lat: Double?, lon: Double?) = liveData {
         emit(ResultState.Loading)
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -122,8 +122,10 @@ class UserRepository private constructor(
             imageFile.name,
             requestImageFile
         )
+        val requestLat = lat?.toString()?.toRequestBody("text/plain".toMediaType())
+        val requestLon = lon?.toString()?.toRequestBody("text/plain".toMediaType())
         try {
-            val successResponse = apiService.addStory(multipartBody, requestBody)
+            val successResponse = apiService.addStory(multipartBody, requestBody, requestLat, requestLon)
             emit(ResultState.Success(successResponse))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()

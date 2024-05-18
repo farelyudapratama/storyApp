@@ -1,6 +1,8 @@
 package com.yuch.storyapp.view.addStory
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +15,10 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.yuch.storyapp.R
 import com.yuch.storyapp.data.ResultState
 import com.yuch.storyapp.databinding.ActivityAddStoryBinding
@@ -21,9 +26,11 @@ import com.yuch.storyapp.view.ViewModelFactory
 import com.yuch.storyapp.view.cameraX.CameraXActivity
 import com.yuch.storyapp.view.cameraX.CameraXActivity.Companion.CAMERAX_RESULT
 import com.yuch.storyapp.view.main.MainActivity
+import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val viewModel by viewModels<AddStoryViewModel>{
         ViewModelFactory.getInstance(this)
     }
@@ -33,7 +40,7 @@ class AddStoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         setupView()
         setupAction()
     }
@@ -42,7 +49,7 @@ class AddStoryActivity : AppCompatActivity() {
         binding.apply {
             cameraXButton.setOnClickListener { startCameraX()  }
             galleryButton.setOnClickListener { startGallery() }
-            uploadButton.setOnClickListener { uploadImage() }
+            uploadButton.setOnClickListener { handleUploadImage() }
         }
     }
 
@@ -92,33 +99,63 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
+    private fun handleUploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.descEditText.text.toString()
 
-            viewModel.uploadImage(imageFile, description).observe(this) {result ->
-                if (result != null) {
-                    when (result) {
-                        is ResultState.Loading -> {
-                            showLoading(true)
-                        }
-                        is ResultState.Success -> {
-                            showToast(result.data.message.toString())
-                            showLoading(false)
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                        }
-                        is ResultState.Error -> {
-                            showLoading(false)
-                            showToast(result.error)
-                        }
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                submitStory(imageFile, description)
+            } else {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null) {
+                        val isChecked = binding.cbShareLocation.isChecked
+                        val lat = if (isChecked) location.latitude else null
+                        val lon = if (isChecked) location.longitude else null
+                        submitStory(imageFile, description, lat, lon)
+                    } else {
+                        // Handle the case where location is null
+                        showToast("Unable to retrieve location.")
+                        showLoading(false)
                     }
                 }
             }
+            showLoading(true)
         } ?: showToast(getString(R.string.empty_image_warning))
+    }
+
+    private fun submitStory(imageFile: File,
+                            description: String,
+                            lat: Double? = null,
+                            lon: Double? = null,){
+        viewModel.uploadStory(imageFile, description, lat, lon).observe(this) {result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> {
+                        showLoading(true)
+                    }
+                    is ResultState.Success -> {
+                        showToast(result.data.message.toString())
+                        showLoading(false)
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    }
+                    is ResultState.Error -> {
+                        showLoading(false)
+                        showToast(result.error)
+                    }
+                }
+            }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

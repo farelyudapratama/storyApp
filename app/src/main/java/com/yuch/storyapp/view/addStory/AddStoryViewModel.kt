@@ -5,5 +5,5 @@ import com.yuch.storyapp.data.UserRepository
 import java.io.File
 
 class AddStoryViewModel(private val repository: UserRepository) : ViewModel() {
-    fun uploadImage(file: File, description: String) = repository.addStories(file, description)
+    fun uploadStory(file: File, description: String, lat: Double?, lon: Double?) = repository.addStories(file, description, lat, lon)
 }
