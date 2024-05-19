@@ -35,6 +35,25 @@ class AddStoryActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var currentImageUri: Uri? = null
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            REQUEST_LOCATION_PERMISSION
+        )
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    handleUploadImage()
+                } else {
+                    showToast("Permission denied. Unable to retrieve location.")
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,31 +123,32 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.descEditText.text.toString()
+            val isCheckde = binding.cbShareLocation.isChecked
 
-            if (ActivityCompat.checkSelfPermission(
+            if(isCheckde){
+                if (ActivityCompat.checkSelfPermission(
                     this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                submitStory(imageFile, description)
-            } else {
-                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    if (location != null) {
-                        val isChecked = binding.cbShareLocation.isChecked
-                        val lat = if (isChecked) location.latitude else null
-                        val lon = if (isChecked) location.longitude else null
-                        submitStory(imageFile, description, lat, lon)
-                    } else {
-                        // Handle the case where location is null
-                        showToast("Unable to retrieve location.")
-                        showLoading(false)
+                    this, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED){
+                    requestLocationPermission()
+                } else {
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            val lat = location.latitude
+                            val lon = location.longitude
+                            submitStory(imageFile, description, lat, lon)
+                        } else {
+                            showToast("Location not found. Please enable location services.")
+                            showLoading(false)
+                        }
                     }
+                    showLoading(true)
                 }
+            } else {
+                submitStory(imageFile, description)
             }
-            showLoading(true)
         } ?: showToast(getString(R.string.empty_image_warning))
     }
 
@@ -164,4 +184,8 @@ class AddStoryActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+    companion object {
+        private const val REQUEST_LOCATION_PERMISSION = 1
+    }
+
 }

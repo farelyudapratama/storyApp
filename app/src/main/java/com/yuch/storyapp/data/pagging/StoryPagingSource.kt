@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.yuch.storyapp.data.api.ApiService
 import com.yuch.storyapp.data.response.ListStoryItem
 
+// Karena pakai story remote mediator class ini jadi tidak digunakan
 class StoryPagingSource(private val apiService: ApiService) : PagingSource<Int, ListStoryItem>() {
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
