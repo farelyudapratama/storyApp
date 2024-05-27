@@ -8,6 +8,7 @@ import com.yuch.storyapp.data.ResultState
 import com.yuch.storyapp.data.UserRepository
 import com.yuch.storyapp.data.pref.UserModel
 import com.yuch.storyapp.data.response.LoginResponse
+import com.yuch.storyapp.util.LoginLogoutIdlingResource
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
@@ -15,11 +16,13 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     val loginResult: LiveData<ResultState<LoginResponse>> get() = _loginResult
 
     fun login(email:String, password:String){
+        LoginLogoutIdlingResource.increment()
         _loginResult.value = ResultState.Loading
 
         viewModelScope.launch {
             val result = repository.login(email, password)
             _loginResult.value = result
+            LoginLogoutIdlingResource.decrement()
         }
     }
 

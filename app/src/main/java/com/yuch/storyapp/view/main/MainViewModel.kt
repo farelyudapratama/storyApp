@@ -10,6 +10,7 @@ import androidx.paging.cachedIn
 import com.yuch.storyapp.data.UserRepository
 import com.yuch.storyapp.data.pref.UserModel
 import com.yuch.storyapp.data.response.ListStoryItem
+import com.yuch.storyapp.util.LoginLogoutIdlingResource
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
@@ -21,6 +22,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getSession().asLiveData()
     }
     fun logout() {
+        LoginLogoutIdlingResource.increment()
         viewModelScope.launch {
             try {
                 repository.logout()
@@ -28,5 +30,6 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                 Log.e("MainViewModel", "Error during logout", e)
             }
         }
+        LoginLogoutIdlingResource.decrement()
     }
 }
